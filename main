@@ -1,0 +1,31 @@
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+public class Honeypot {
+    public static void main(String[] args) {
+        int honeypotPort = 8080; // Porta onde o honeypot estará ouvindo
+        
+        try {
+            ServerSocket serverSocket = new ServerSocket(honeypotPort);
+            System.out.println("Honeypot está ouvindo na porta " + honeypotPort);
+            
+            while (true) {
+                Socket clientSocket = serverSocket.accept(); // Aceita conexões de clientes
+                System.out.println("Conexão recebida de: " + clientSocket.getInetAddress());
+                
+                // Registre a atividade do honeypot ou tome medidas apropriadas
+                logActivity(clientSocket.getInetAddress().getHostAddress());
+                
+                clientSocket.close(); // Fecha a conexão
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private static void logActivity(String ipAddress) {
+        // Registre a atividade do honeypot, por exemplo, em um arquivo de log
+        System.out.println("Atividade suspeita detectada de: " + ipAddress);
+    }
+}
